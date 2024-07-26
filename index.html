@@ -31,6 +31,8 @@
     </form>
 
     <script>
+        Telegram.WebApp.ready();
+
         document.getElementById('deployForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
@@ -43,6 +45,7 @@
                 initialMint: document.getElementById('initialMint').value,
             };
 
+            console.log('Sending data:', params);
             Telegram.WebApp.sendData(JSON.stringify(params));
         });
     </script>
