@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Miniapp</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
   <h1>Welcome to the Miniapp</h1>
@@ -13,7 +13,7 @@
   <div id="log"></div>
 
   <script>
-    const PASTEBIN_API_KEY = 'aGJSXAnv-pwu-KHRpCqgtU2ZZib9JwC8'; // Replace with your Pastebin API key
+    const LOG_URL = 'https://eo94xtgmrp2yc3c.m.pipedream.net'; // Replace with your RequestBin URL
 
     function log(message) {
       const logElement = document.getElementById('log');
@@ -21,23 +21,15 @@
       logMessage.textContent = message;
       logElement.appendChild(logMessage);
 
-      // Send log to Pastebin
-      fetch('https://pastebin.com/api/api_post.php', {
+      // Send log to RequestBin
+      fetch(LOG_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         },
-        body: new URLSearchParams({
-          api_dev_key: PASTEBIN_API_KEY,
-          api_option: 'paste',
-          api_paste_code: message,
-          api_paste_private: '1', // 0=public 1=unlisted 2=private
-          api_paste_expire_date: '10M', // Expire in 10 minutes
-          api_paste_format: 'text'
-        })
+        body: JSON.stringify({ message })
       })
-      .then(response => response.text())
-      .then(url => console.log('Log URL:', url))
+      .then(response => console.log('Log sent:', message))
       .catch(err => console.error('Failed to send log:', err));
     }
 
