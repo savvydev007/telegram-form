@@ -42,7 +42,7 @@
           Telegram.WebApp.close();
         });
       } catch (error) {
-        log('Error sending data to bot: ' + error.message);
+        log('Error sending data to bot: ' + typeof Telegram.WebApp.sendData);
       }
     }
 
