@@ -10,12 +10,51 @@
   <h1>Welcome to the Miniapp</h1>
   <p>This is a simple miniapp UI.</p>
   <button onclick="sendMessageToBot()">Send Message to Bot</button>
+  <div id="log"></div>
 
   <script>
-    function sendMessageToBot() {
-      Telegram.WebApp.sendData("Hello from Miniapp!");
-      Telegram.WebApp.close();
+    const PASTEBIN_API_KEY = 'YOUR_PASTEBIN_API_KEY'; // Replace with your Pastebin API key
+
+    function log(message) {
+      const logElement = document.getElementById('log');
+      const logMessage = document.createElement('div');
+      logMessage.textContent = message;
+      logElement.appendChild(logMessage);
+
+      // Send log to Pastebin
+      fetch('https://pastebin.com/api/api_post.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          api_dev_key: PASTEBIN_API_KEY,
+          api_option: 'paste',
+          api_paste_code: message,
+          api_paste_private: '1', // 0=public 1=unlisted 2=private
+          api_paste_expire_date: '10M', // Expire in 10 minutes
+          api_paste_format: 'text'
+        })
+      })
+      .then(response => response.text())
+      .then(url => console.log('Log URL:', url))
+      .catch(err => console.error('Failed to send log:', err));
     }
+
+    function sendMessageToBot() {
+      log('Attempting to send data to bot');
+      try {
+        Telegram.WebApp.sendData("Hello from Miniapp!");
+        log('Data sent to bot');
+        Telegram.WebApp.close();
+      } catch (error) {
+        log('Error sending data to bot: ' + error.message);
+      }
+    }
+
+    window.addEventListener('load', () => {
+      log('Miniapp loaded');
+    });
   </script>
 </body>
 </html>
