@@ -1,52 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Miniapp</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint Your Token</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .header-text .title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .header-text .description {
+            padding-top: 3px;
+            font-size: 16px;
+            color: #666;
+        }
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            text-align: center;
+            color: #000;
+        }
+        .container p {
+            color: #7a7a7a;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #999;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e6e6e6;
+            border-radius: 12px;
+            font-size: 14px;
+            box-sizing: border-box;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+        .form-group .description {
+            font-size: 12px;
+            color: #aaa;
+        }
+        .button-container {
+            text-align: center;
+        }
+        .button-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <h1>Welcome to the Miniapp</h1>
-  <p>This is a simple miniapp UI.</p>
-  <button onclick="sendMessageToBot()">Send Message to Bot</button>
-  <div id="log"></div>
-
-  <script>
-    const LOG_URL = 'YOUR_REQUESTBIN_URL'; // Replace with your RequestBin URL
-
-    function log(message) {
-      const logElement = document.getElementById('log');
-      const logMessage = document.createElement('div');
-      logMessage.textContent = message;
-      logElement.appendChild(logMessage);
-
-      // Send log to RequestBin
-      fetch(LOG_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message })
-      })
-      .then(response => console.log('Log sent:', message))
-      .catch(err => console.error('Failed to send log:', err));
-    }
-
-    function sendMessageToBot() {
-      log('Attempting to send data to bot');
-      try {
-        Telegram.WebApp.sendData("Hello from Miniapp!");
-        log('Data sent to bot');
-        // Telegram.WebApp.close();
-      } catch (error) {
-        log('Error sending data to bot: ' + error.message);
-      }
-    }
-
-    window.addEventListener('load', () => {
-      log('Miniapp loaded');
-    });
-  </script>
+    <h1>Mint your token</h1>
+    <div class="container">
+        <div class="header">
+            <img src="./coin-logo.svg" alt="Logo" width="60" height="60">
+            <div class="header-text">
+                <span class="title">Token name (Symbol)</span>
+                <span class="description">Description</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="token-name">Token Name</label>
+            <input type="text" id="token-name" placeholder="Your project unabbreviated name with spaces (usually 1-3 words).">
+        </div>
+        <div class="form-group">
+            <label for="token-symbol">Token Symbol</label>
+            <input type="text" id="token-symbol" placeholder="Currency symbol appearing in balance (usually 3-5 uppercase chars).">
+        </div>
+        <div class="form-group">
+            <label for="decimal-precision">Decimal Precision</label>
+            <input type="number" id="decimal-precision" value="9" placeholder="The decimal precision of your token (9 is TON default).">
+        </div>
+        <div class="form-group">
+            <label for="tokens-to-mint">Tokens to Mint</label>
+            <input type="number" id="tokens-to-mint" placeholder="Number of initial tokens to mint and send to your wallet address (float).">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" placeholder="Optional sentence explaining about your project.">
+        </div>
+        <div class="button-container">
+            <button>Deploy</button>
+        </div>
+    </div>
 </body>
 </html>
